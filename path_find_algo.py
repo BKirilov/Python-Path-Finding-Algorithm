@@ -5,19 +5,81 @@ understanding of how the algorithm works.
 
 import queue
 
+
+def create_map():  # Map 1
+    map = []
+
+    map.append(["#", "#", "#", "#", "#", "O", "#"])
+    map.append(["#", " ", " ", " ", "#", " ", "#"])
+    map.append(["#", "#", "#", " ", "#", " ", "#"])
+    map.append(["#", " ", " ", " ", " ", " ", "#"])
+    map.append(["#", "#", " ", "#", "#", " ", "#"])
+    map.append(["#", " ", " ", " ", "#", " ", "#"])
+    map.append(["#", "X", "#", "#", "#", "#", "#"])
+
+    return map
+
+
+def create_map2():  # Map 2
+    map = []
+
+    map.append(["#", "#", "#", "#", "#", "O", "#", "#", "#"])
+    map.append(["#", " ", " ", " ", " ", " ", " ", " ", "#"])
+    map.append(["#", " ", "#", "#", " ", "#", "#", " ", "#"])
+    map.append(["#", " ", "#", " ", " ", " ", "#", " ", "#"])
+    map.append(["#", " ", " ", " ", "#", " ", "#", " ", "#"])
+    map.append(["#", " ", "#", "#", "#", " ", "#", " ", "#"])
+    map.append(["#", " ", " ", "#", "#", "#", "#", "#", "#"])
+    map.append(["#", "#", " ", " ", " ", " ", " ", " ", "#"])
+    map.append(["#", "#", "#", "#", "#", "X", "#", "#", "#"])
+
+    return map
+
+
+def printmap(map, path=""):
+    for x, pos in enumerate(map[0]):
+        if pos == "O":
+            start = x
+
+    i = start
+    j = 0
+    pos = set()
+    for move in path:
+        if move == "L":
+            i -= 1
+
+        elif move == "R":
+            i += 1
+
+        elif move == "U":
+            j -= 1
+
+        elif move == "D":
+            j += 1
+        pos.add((j, i))
+
+    for j, row in enumerate(map):
+        for i, col in enumerate(row):
+            if (j, i) in pos:
+                print("+ ", end="")
+            else:
+                print(col + " ", end="")
+        print()
+
+
 # THE MAIN ALGORITHM
 
 q = queue.Queue()  # Creating a queue.
 q.put("")  # Putting a blank string inside the queue.
 path = ""  # We set the path to blank string, which represents the first move/path.
-maze = createMaze()  # This is the maze that we run through to see if we have reached the end or not.
+map = create_map()  # This is the map that we run through to see if we have reached the end or not.
 
-while not findEnd(maze, path):  # We will loop through the maze until we find the shortest path to the end.
+while not findEnd(map, path):  # We will loop through the maze until we find the shortest path to the end.
     path = q.get()  # Dequeue.Get the first item from the queue. "q" represents all of the different things in our queue
     print(path)  # The valid path is printed in a format such as "DDDLLDRR"
     for choice in ["L", "R", "U", "D"]:  # Loop through all of the possible moves.
         move = path + choice  # Whatever was in the queue + the last choice/iteration.
-        if valid(maze, move):  # Before the move is added it is validated. If it's invalid we go to the next one.
+        if valid(map, move):  # Before the move is added it is validated. If it's invalid we go to the next one.
             q.put(move)  # The move is a valid one and it is added to the queue...the loop starts over.
 
 # Once the loop breaks the path will be equal to whatever the last path in the queue is.
